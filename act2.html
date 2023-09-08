@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACTIVITY 2 -  DEGUINO </title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .warning {
+            color: red;
+        }
+
+        .weak {
+            color: red;
+        }
+
+        .medium {
+            color: yellow;
+        }
+
+        .strong {
+            color: green;
+        }
+
+        .match {
+            color: green;
+        }
+
+        .mismatch {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        let mainApp = document.getElementById('app');
+        
+        let hwan = document.createElement('h1');
+        let spanFirstName = document.createElement('span');
+        let spanLastName = document.createElement('span');
+        
+        let divFirstName = document.createElement('div');
+        let divLastName = document.createElement('div');
+        let divEmail = document.createElement('div');
+        let divPassword = document.createElement('div');
+        let divConfirmPassword = document.createElement('div');
+        
+        let labelFirst = document.createElement('label');
+        let labelLast = document.createElement('label');
+        let labelEmail = document.createElement('label');
+        let labelPassword = document.createElement('label');
+        let labelConfirmPassword = document.createElement('label');
+        
+        let inputElementwan = document.createElement('input');
+        let inputElementtwo = document.createElement('input');
+        let inputEmail = document.createElement('input');
+        let inputPassword = document.createElement('input');
+        let inputConfirmPassword = document.createElement('input');
+
+        let emailWarning = document.createElement('span');
+        let passwordStrength = document.createElement('span');
+        let passwordConfirmationFeedback = document.createElement('span');
+        
+        emailWarning.className = 'warning';
+        emailWarning.innerText = ''; 
+        
+        spanFirstName.innerText = 'FirstName';
+        spanLastName.innerText = ' LastName';
+        
+        inputElementwan.setAttribute('placeholder', 'Firstname');
+        inputElementtwo.setAttribute('placeholder', 'Lastname');
+        inputEmail.setAttribute('placeholder', 'Email');
+        inputPassword.setAttribute('type', 'password');
+        inputPassword.setAttribute('placeholder', 'Password');
+        inputConfirmPassword.setAttribute('type', 'Password');
+        inputConfirmPassword.setAttribute('placeholder', 'Confirm Password');
+
+        inputElementwan.addEventListener('input', function (event) {
+            spanFirstName.innerText = event.target.value + " ";
+        });
+
+        inputElementtwo.addEventListener('input', function (event) {
+            spanLastName.innerText = event.target.value;
+        });
+
+        inputEmail.addEventListener('input', function(event) {
+            if (event.target.value === '') {
+                emailWarning.innerText = ''; 
+            } else if(!isValidEmail(event.target.value)) {
+                emailWarning.innerText = 'Please enter a valid email';
+            } else {
+                emailWarning.innerText = '';
+            }
+        });
+
+        inputPassword.addEventListener('input', function(event) {
+            const length = event.target.value.length;
+            if (length < 6) {
+                passwordStrength.innerText = 'Weak';
+                passwordStrength.className = 'weak';
+            } else if (length < 9) {
+                passwordStrength.innerText = 'Medium';                                          
+                passwordStrength.className = 'medium';
+            } else {
+                passwordStrength.innerText = 'Strong';
+                passwordStrength.className = 'strong';
+            }
+            if (length === 0) {
+                passwordStrength.innerText = ''; 
+            }
+            checkEmptyPasswordConfirmation();
+        });
+
+        inputConfirmPassword.addEventListener('input', function(event) {
+            if(event.target.value === inputPassword.value) {
+                passwordConfirmationFeedback.innerText = 'Matched Password';
+                passwordConfirmationFeedback.className = 'match';
+            } else {
+                passwordConfirmationFeedback.innerText = 'Did Not Match Password';
+                passwordConfirmationFeedback.className = 'mismatch';
+            }
+            if (event.target.value === '') {
+                passwordConfirmationFeedback.innerText = ''; 
+            }
+            checkEmptyPasswordConfirmation();
+        });
+
+        hwan.append(spanFirstName);
+        hwan.append(spanLastName);
+        mainApp.append(hwan);
+        
+        divFirstName.append(labelFirst, inputElementwan);
+        mainApp.append(divFirstName);
+
+        divLastName.append(labelLast, inputElementtwo);
+        mainApp.append(divLastName);
+
+        divEmail.append(labelEmail, inputEmail, emailWarning);
+        mainApp.append(divEmail);
+        
+        divPassword.append(labelPassword, inputPassword, passwordStrength);
+        mainApp.append(divPassword);
+        
+        divConfirmPassword.append(labelConfirmPassword, inputConfirmPassword, passwordConfirmationFeedback);
+        mainApp.append(divConfirmPassword);
+        
+        function isValidEmail(email) {
+            const emailRegex = /^\S+@\S+\.\S+$/;
+            return emailRegex.test(email);
+        }
+          
+        function checkEmptyPasswordConfirmation() {
+            const password = inputPassword.value;
+            const confirmPassword = inputConfirmPassword.value;
+            if (password === '' && confirmPassword !== '') {
+                passwordConfirmationFeedback.innerText = 'Warning: You do not have a password to confirm yet. Please input a password.';
+                passwordConfirmationFeedback.className = 'warning';
+            }
+        }
+    </script>
+</body>
+</html>
